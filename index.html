@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ytdl-web | URLから音声・動画を保存</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1>ytdl-web</h1>
+    <p class="lead">動画のURLを貼り付けて、音声または動画として保存します。</p>
+
+    <form id="form" autocomplete="off">
+      <label class="url">
+        <span class="sr">動画のURL</span>
+        <input id="url" type="url" required placeholder="https://www.youtube.com/watch?v=…" inputmode="url">
+      </label>
+
+      <div class="row">
+        <label>
+          <span>フォーマット</span>
+          <select id="format"></select>
+        </label>
+        <label>
+          <span>ファイル名（空欄なら動画タイトル）</span>
+          <input id="filename" type="text" maxlength="150">
+        </label>
+      </div>
+
+      <button id="submit" type="submit">変換を開始</button>
+    </form>
+
+    <section id="status" hidden aria-live="polite">
+      <p id="message"></p>
+      <progress id="bar" max="100" value="0"></progress>
+      <p id="result" hidden>
+        <a id="download" class="button" href="#">ファイルを保存</a>
+        <span id="expiry"></span>
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p id="info">yt-dlp を読み込み中…</p>
+    <p>権利を持つ、または保存が許可されているコンテンツにのみ使ってください。</p>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
