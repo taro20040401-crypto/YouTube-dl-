@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ytdl-web</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='11' fill='%23d7261e'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="bar">
+    <span class="brand">ytdl-web</span>
+    <span id="version" class="version"></span>
+  </header>
+
+  <main>
+    <h1>URLから保存</h1>
+
+    <form id="form" autocomplete="off">
+      <div class="urlrow">
+        <label class="sr" for="url">動画のURL</label>
+        <input id="url" type="text" required inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false"
+               placeholder="動画のURLを貼り付け">
+        <button id="paste" type="button" class="plain">貼り付け</button>
+      </div>
+
+      <fieldset>
+        <legend class="sr">形式</legend>
+        <div class="group">
+          <span class="gname">音声</span>
+          <div id="audio" class="opts"></div>
+        </div>
+        <div class="group">
+          <span class="gname">動画</span>
+          <div id="video" class="opts"></div>
+        </div>
+      </fieldset>
+
+      <div class="namerow">
+        <label for="filename">ファイル名</label>
+        <input id="filename" type="text" maxlength="150" placeholder="空欄なら動画のタイトル">
+      </div>
+
+      <button id="submit" type="submit" class="go"><i aria-hidden="true"></i>変換する</button>
+    </form>
+
+    <section id="status" hidden aria-live="polite">
+      <p id="message" class="msg"></p>
+      <div id="meter" class="meter" aria-hidden="true"><span id="fill"></span></div>
+      <p id="pct" class="pct" aria-hidden="true"></p>
+      <p id="hint" class="hint" hidden></p>
+      <details id="detailbox" class="detail" hidden>
+        <summary>詳細（元のエラー）</summary>
+        <p id="detail"></p>
+      </details>
+      <div id="result" class="result" hidden>
+        <div class="rname"><b id="rfile"></b><small id="rexp"></small></div>
+        <a id="download" class="save" href="#">ファイルを保存</a>
+      </div>
+    </section>
+
+    <section id="history" hidden>
+      <div class="hhead">
+        <h2>最近の変換</h2>
+        <button id="clear" type="button" class="plain small">履歴を消す</button>
+      </div>
+      <ul id="hlist"></ul>
+    </section>
+  </main>
+
+  <footer>
+    <p id="note">権利を持つ動画、または保存が許可された動画だけに使ってください。</p>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
