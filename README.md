@@ -48,7 +48,28 @@ uvicorn main:app --reload
 | `MAX_FILESIZE_MB` | 2048 | ファイルサイズの上限 |
 | `TRUST_PROXY` | 0 | リバースプロキシ配下なら 1（`X-Forwarded-For` を信用） |
 | `ALLOW_PRIVATE_HOSTS` | 0 | 1 にするとプライベート IP への接続を許可（非推奨） |
-| `YTDLP_AUTO_UPDATE` | 1 | Docker 起動時に yt-dlp を最新化 |
+| `YTDLP_AUTO_UPDATE` | 1 | 起動時と定期的（下記）に yt-dlp を最新化。新版が入ったら自動で再起動 |
+| `YTDLP_UPDATE_INTERVAL_HOURS` | 6 | yt-dlp の更新確認の間隔（ジョブがない時だけ実行） |
+| `YTDLP_PROXIES` | (空) | プロキシ一覧。カンマ区切り。例: `http://1.2.3.4:80,socks5://5.6.7.8:1080,direct`（`direct` はプロキシなし） |
+| `KEEP_ALIVE` | 0 | 1 にすると、自分の公開URLへ定期アクセスしてスリープを防ぐ（Render 無料プラン向け） |
+| `KEEP_ALIVE_INTERVAL_SECONDS` | 600 | アクセス間隔（秒）。Render の無料プランは15分でスリープするので 840 以下に |
+| `KEEP_ALIVE_URL` | (自動) | Render では `RENDER_EXTERNAL_URL` を自動で使用。他の環境では自分のURLを指定 |
+| `YTDLP_CLIENTS` | `default,android_vr,tv,mweb,ios` | YouTube で順に試すクライアント。失敗したら次へ。直近で成功したものを優先 |
+| `MAX_ATTEMPTS` | 8 | 1回の変換で試す（プロキシ × クライアント）の最大数 |
+| `EMBED_THUMBNAIL` | 0 | 1 にすると M4A / MP3 にジャケット画像を埋め込む（CPU を使うので既定はオフ） |
+| `PROXY_COOLDOWN_SECONDS` | 600 | 失敗した回線を休ませる秒数 |
+
+## クライアントの自動切り替え
+
+YouTube では、yt-dlp が使う「クライアント（YouTube への名乗り方）」を順に替えて試します。標準の設定で
+ボット判定されても、別のクライアントなら通ることがあります。成功した組み合わせは次回から先頭で試します。
+YouTube 以外のサイトでは、この切り替えは行いません。
+
+## プロキシの自動切り替え
+
+`YTDLP_PROXIES` に複数のプロキシを入れると、失敗（接続不能・タイムアウト・証明書エラー・ボット判定など）した時に
+自動で次の回線へ切り替えます。直近で成功した回線が優先され、失敗した回線は一定時間休ませます。
+証明書エラーは、プロキシが HTTPS 通信を書き換えている（中間者）可能性があるため、検証を無効にせず、その回線を使わない方針です。
 
 ## 公開して運用する場合の注意
 
